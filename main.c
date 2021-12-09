@@ -6,6 +6,7 @@ float Resistencias[12] = {100,200,330,470,680,1000,2000,3300,4700,6800,33000,100
 float ImpedanciasPossiveis[500000]={100,200,330,470,680,1000,2000,3300,4700,6800,33000,100000};
 int Combinacoes = 0;
 
+/* Inicializacao das funcoes */
 void swap(int *xp, int *yp);
 void bubbleSort(float arr[], int n);
 int RemoverElementosDuplicados(float arr[], int n);
@@ -16,8 +17,7 @@ float ResEquivParalelo(float res1, float res2, float res3, float res4);
 float ResEquivSerie(float res1, float res2, float res3, float res4);
 void ImprimeImpedanciasPossiveis();
 
-#define INFINITY 999999999999
-
+/* Troca dois elementos num array */
 void swap(int *xp, int *yp)
 {
     int temp = *xp;
@@ -25,6 +25,7 @@ void swap(int *xp, int *yp)
     *yp = temp;
 }
 
+/* Ordena um array por ordem crescente */
 void bubbleSort(float arr[], int n)
 {
     int i, j;
@@ -34,6 +35,7 @@ void bubbleSort(float arr[], int n)
                 swap(&arr[j], &arr[j+1]);
 }
 
+/* Remove elementos duplicados num array */
 int RemoverElementosDuplicados(float arr[], int n)
 {
 
@@ -55,6 +57,7 @@ int RemoverElementosDuplicados(float arr[], int n)
     return j;
 }
 
+/* Remove elementos consecutivos que variam menos de 0.1% */
 int RemoverElementosSimilares(float arr[], int n)
 {
 
@@ -76,6 +79,7 @@ int RemoverElementosSimilares(float arr[], int n)
     return j;
 }
 
+/* Combinacao de resistencias 1 */
 float QuatroParaleloZeroSerie()
 {
     for(int i=0; i<12; i++)
@@ -94,6 +98,7 @@ float QuatroParaleloZeroSerie()
     }
 }
 
+/* Combinacao de resistencias 2 */
 float TresParaleloUmSerie()
 {
     float res;
@@ -114,6 +119,7 @@ float TresParaleloUmSerie()
     }
 }
 
+/* Combinacao de resistencias 3 */
 float DoisParaleloDoisSerie()
 {
     float res;
@@ -134,6 +140,7 @@ float DoisParaleloDoisSerie()
     }
 }
 
+/* Combinacao de resistencias 4 */
 float UmParaleloTresSerie()
 {
     float res;
@@ -154,6 +161,7 @@ float UmParaleloTresSerie()
     }
 }
 
+/* Combinacao de resistencias 5 */
 void ZeroParaleloQuatroSerie()
 {
     for(int i=0; i<12; i++)
@@ -173,6 +181,7 @@ void ZeroParaleloQuatroSerie()
 
 }
 
+/* Calcula a resistencia equivalente em paralelo */
 float ResEquivParalelo(float res1, float res2, float res3, float res4)
 {
     float res = pow(res1,-1) + pow(res2,-1) + pow(res3,-1) + pow(res4,-1);
@@ -180,11 +189,13 @@ float ResEquivParalelo(float res1, float res2, float res3, float res4)
     return res;
 }
 
+/* Calcula a resistencia equivalente em serie */
 float ResEquivSerie(float res1, float res2, float res3, float res4)
 {
     return res1 + res2 + res3 + res4;
 }
 
+/* Imprime as impedancias do array de combinacoes */
 void ImprimeImpedanciasPossiveis()
 {
     for(int i=0; i<Combinacoes; i++)
@@ -197,12 +208,14 @@ int main()
 {
     printf("\n Loading . . .");
 
+    /* Carrega as 5 possiveis combinacoes de resistencias */
     QuatroParaleloZeroSerie();
     TresParaleloUmSerie();
     DoisParaleloDoisSerie();
     UmParaleloTresSerie();
     ZeroParaleloQuatroSerie();
 
+    /* Ordena, remove duplicado e similares do array de combinacoes */
     bubbleSort(ImpedanciasPossiveis, Combinacoes);
     Combinacoes = RemoverElementosDuplicados(ImpedanciasPossiveis, Combinacoes);
     Combinacoes = RemoverElementosSimilares(ImpedanciasPossiveis, Combinacoes);
@@ -223,6 +236,8 @@ int main()
         printf("Qual o valor de tolerancia desejado? (Percentagem)\n");
         scanf("%f",&tol);
         tol = tol/100;
+
+        /* Percorre o array e encontra impedancias dentro dos limites pedidos */
         for(i=0;i<Combinacoes;i++){
             if(abs(ImpedanciasPossiveis[i]-imp)<=tol*imp){
                 printf("Impedancia possivel: %2.f Ohms\n",ImpedanciasPossiveis[i]);
